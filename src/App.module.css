@@ -1,0 +1,19 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+.canvas-container {
+    width: 100svw;
+    height: 100svh;
+    /* background: #777777; */
+
+}
+
+canvas {
+    width: 100svw;
+    height: 100svh;
+    /* background: #dddddd; */
+}
