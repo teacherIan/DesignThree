@@ -3,19 +3,30 @@ import { useRef } from 'react';
 import heart from './assets/heart.png';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
+import top from './assets/top.png';
+import bottom from './assets/bottom.png';
+import front from './assets/front.png';
+import back from './assets/back.png';
+import left from './assets/left.png';
+import right from './assets/right.png';
 
 export default function ImageBoxes({ imageUrl, rows, cols, spacing }) {
   const texture = useTexture(imageUrl);
+  const topTexture = useTexture(top);
+  const bottomTexture = useTexture(bottom);
+  const frontTexture = useTexture(front);
+  const backTexture = useTexture(back);
+  const leftTexture = useTexture(left);
+  const rightTexture = useTexture(right);
   const groupRef = useRef();
 
   useFrame((state) => {
     if (groupRef.current) {
-      console.log(
-        groupRef.current.children.forEach((c, i) => {
-          //   c.rotation.x = state.clock.elapsedTime / 4;
-          //   c.rotation.y = state.clock.elapsedTime / 2;
-        })
-      );
+      groupRef.current.children.forEach((c, i) => {
+        // c.rotation.z = state.clock.elapsedTime / 4;
+        // c.rotation.y = state.clock.elapsedTime / 4;
+      });
+
       //   groupRef.current.rotation.y =  // Adjust speed as needed
     }
   });
@@ -35,37 +46,37 @@ export default function ImageBoxes({ imageUrl, rows, cols, spacing }) {
               {/* Box with solid color material */}
               <mesh>
                 <boxGeometry args={[1, 1, 1]} />
-                <meshStandardMaterial transparent />
+                <meshStandardMaterial color={'#000000'} />
               </mesh>
 
               {/* Front face with texture */}
-              {/* <mesh position={[0, 0, 0.501]}>
+              <mesh position={[0, 0, 0.51]}>
                 <planeGeometry args={[1, 1]} />
                 <meshStandardMaterial transparent>
                   <texture
                     attach="map"
-                    {...texture}
+                    {...frontTexture}
                     repeat={[1 / cols, 1 / rows]}
-                    offset={[colIndex / cols, 1 - (rowIndex + 1) / rows]}
+                    offset={[colIndex / cols, 1 - rowIndex / rows]}
                   />
                 </meshStandardMaterial>
-              </mesh> */}
+              </mesh>
               {/* back face with texture */}
-              {/* <mesh position={[0, 0, -0.501]} rotation={[Math.PI, 0, 0]}>
+              <mesh position={[0, 0, -0.51]} rotation={[Math.PI, 0, 0]}>
                 <planeGeometry args={[1, 1]} />
                 <meshStandardMaterial transparent>
                   <texture
                     // rotation={[0, 0, 0]}
                     attach="map"
-                    {...texture}
+                    {...backTexture}
                     repeat={[1 / cols, 1 / rows]}
                     offset={[colIndex / cols, 1 - rowIndex / rows]}
                   />
                 </meshStandardMaterial>
-              </mesh> */}
+              </mesh>
               {/* Left face with texture */}
               <mesh
-                position={[-0.501, 0, 0]}
+                position={[-0.51, 0, 0]}
                 rotation={[0, -Math.PI / 2, 0]}
                 transparent
               >
@@ -73,52 +84,48 @@ export default function ImageBoxes({ imageUrl, rows, cols, spacing }) {
                 <meshStandardMaterial transparent>
                   <texture
                     attach="map"
-                    {...texture}
+                    {...leftTexture}
                     repeat={[1 / cols, 1 / rows]}
                     offset={[colIndex / cols, 1 - (rowIndex + 1) / rows]}
                   />
                 </meshStandardMaterial>
               </mesh>
               {/* Right face with texture */}
-              <mesh
-                position={[0.501, 0, 0]}
-                rotation={[0, Math.PI / 2, 0]}
-                transparent
-              >
+              <mesh position={[0.51, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
                 <planeGeometry args={[1, 1]} />
-                <meshStandardMaterial transparent>
+                <meshStandardMaterial transparent color={'#ffffff'}>
                   <texture
                     attach="map"
-                    {...texture}
+                    {...rightTexture}
                     repeat={[1 / cols, 1 / rows]}
                     offset={[colIndex / cols, 1 - (rowIndex + 1) / rows]}
                   />
                 </meshStandardMaterial>
               </mesh>
               {/* Top face with texture */}
-              {/* <mesh position={[0, 0.501, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+              <mesh position={[0, 0.51, 0]} rotation={[-Math.PI / 2, 0, 0]}>
                 <planeGeometry args={[1, 1]} />
                 <meshStandardMaterial transparent>
                   <texture
                     attach="map"
-                    {...texture}
+                    {...topTexture}
                     repeat={[1 / cols, 1 / rows]}
                     offset={[colIndex / cols, 1 - (rowIndex + 1) / rows]}
                   />
                 </meshStandardMaterial>
-              </mesh> */}
+              </mesh>
 
               {/* Bottom face with texture */}
-              <mesh position={[0, -0.501, 0]} rotation={[Math.PI / 2, 0, 0]}>
+              <mesh position={[0, -0.51, 0]} rotation={[Math.PI / 2, 0, 0]}>
                 <planeGeometry args={[1, 1]} />
-                <meshStandardMaterial transparent>
+                <meshBasicMaterial>
                   <texture
                     attach="map"
-                    {...texture}
+                    {...bottomTexture}
                     repeat={[1 / cols, 1 / rows]}
-                    offset={[colIndex / cols, 1 - rowIndex / rows]}
+                    offset={[colIndex / cols, 1 - (rowIndex + 1) / rows]}
                   />
-                </meshStandardMaterial>
+                </meshBasicMaterial>
               </mesh>
             </group>
           );

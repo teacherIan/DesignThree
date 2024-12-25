@@ -16,18 +16,19 @@ export default function App() {
     <div id="canvas-container" style={{ width: '100vw', height: '100vh' }}>
       <Canvas
         orthographic
+        gl={{ antialias: true, depth: true }}
         camera={{
           left: -cameraWidth / 2,
           right: cameraWidth / 2,
           top: cameraHeight / 2,
           bottom: -cameraHeight / 2,
-          near: 0.1,
-          far: 1000,
+          near: 1,
+          far: 100,
           position: [0, 0, 10],
         }}
       >
-        <ambientLight intensity={10} />
-        <directionalLight intensity={5} position={[10, 10, 10]} />
+        <ambientLight intensity={1} />
+        <directionalLight intensity={5} position={[10, 0, 10]} />
 
         <ImageBoxes
           imageUrl={imageUrl}
