@@ -27,8 +27,10 @@ export default function App() {
           position: [0, 0, 10],
         }}
       >
-        <ambientLight intensity={1} />
-        <directionalLight intensity={5} position={[10, 0, 10]} />
+        <ambientLight intensity={6} />
+        {/* <pointLight intensity={20} position={[10, 5, 10]} /> */}
+        {/* <pointLight intensity={20} position={[-10, 0, 10]} /> */}
+        {/* <pointLight intensity={20} position={[10, -5, 10]} /> */}
 
         <ImageBoxes
           imageUrl={imageUrl}

@@ -8,12 +8,12 @@
 .canvas-container {
     width: 100svw;
     height: 100svh;
-    /* background: #777777; */
+
 
 }
 
 canvas {
     width: 100svw;
     height: 100svh;
-    /* background: #dddddd; */
+    background: #dddddd;
 }

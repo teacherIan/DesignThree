@@ -9,6 +9,7 @@ import front from './assets/front.png';
 import back from './assets/back.png';
 import left from './assets/left.png';
 import right from './assets/right.png';
+import { useSprings, animated } from '@react-spring/three';
 
 export default function ImageBoxes({ imageUrl, rows, cols, spacing }) {
   const texture = useTexture(imageUrl);
@@ -20,11 +21,23 @@ export default function ImageBoxes({ imageUrl, rows, cols, spacing }) {
   const rightTexture = useTexture(right);
   const groupRef = useRef();
 
+  //animation
+  const [springs, api] = useSprings(
+    rows * cols,
+    (n) => ({
+      from: { opacity: 1, color: '#00ff00', r: 0 },
+      to: { opacity: 1, color: '#ff0000' },
+
+      delay: n * 10, // Staggered animation
+    }),
+    []
+  );
+
   useFrame((state) => {
     if (groupRef.current) {
       groupRef.current.children.forEach((c, i) => {
         // c.rotation.z = state.clock.elapsedTime / 4;
-        // c.rotation.y = state.clock.elapsedTime / 4;
+        c.rotation.y = state.clock.elapsedTime / 4;
       });
 
       //   groupRef.current.rotation.y =  // Adjust speed as needed
@@ -42,25 +55,37 @@ export default function ImageBoxes({ imageUrl, rows, cols, spacing }) {
           ];
 
           return (
-            <group key={`${rowIndex}-${colIndex}`} position={position}>
+            <animated.group key={`${rowIndex}-${colIndex}`} position={position}>
               {/* Box with solid color material */}
-              <mesh>
+
+              <animated.mesh>
                 <boxGeometry args={[1, 1, 1]} />
-                <meshStandardMaterial color={'#000000'} />
-              </mesh>
+                <animated.meshPhysicalMaterial
+                  roughness={0.25}
+                  reflectivity={1}
+                  metalness={0}
+                  color="white"
+                  // color={springs[rowIndex * cols + colIndex].color}
+                  // opacity={springs[rowIndex * cols + colIndex].opacity}
+                />
+              </animated.mesh>
 
               {/* Front face with texture */}
-              <mesh position={[0, 0, 0.51]}>
+              <animated.mesh position={[0, 0, 0.51]}>
                 <planeGeometry args={[1, 1]} />
-                <meshStandardMaterial transparent>
+                <animated.meshStandardMaterial
+                  transparent
+                  color={springs[rowIndex * cols + colIndex].color}
+                  opacity={springs[rowIndex * cols + colIndex].opacity}
+                >
                   <texture
                     attach="map"
                     {...frontTexture}
                     repeat={[1 / cols, 1 / rows]}
                     offset={[colIndex / cols, 1 - rowIndex / rows]}
                   />
-                </meshStandardMaterial>
-              </mesh>
+                </animated.meshStandardMaterial>
+              </animated.mesh>
               {/* back face with texture */}
               <mesh position={[0, 0, -0.51]} rotation={[Math.PI, 0, 0]}>
                 <planeGeometry args={[1, 1]} />
@@ -127,7 +152,7 @@ export default function ImageBoxes({ imageUrl, rows, cols, spacing }) {
                   />
                 </meshBasicMaterial>
               </mesh>
-            </group>
+            </animated.group>
           );
         })
       )}
